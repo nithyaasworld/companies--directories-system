@@ -1,59 +1,63 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: 'Helvetica', sans-serif;
+    box-sizing: border-box;
 }
-
-:root {
-    --primary-color: #C490E4;
-    --bg-color: #F9F9F9;
-    --shadow-button: 0 2px 2px #0000002e;
-    --shadow-button-hover: 0 4px 4px #0000002e;
-    --shadow-default: 0 2px 6px 0 #00000061;
-
-}
-
-.container {
-    min-height: 100vh;
+.container{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--bg-color);
+    padding: 5em;
+    gap: 2em;
 }
-
-.counter-container {
-    padding: 32px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: var(--shadow-default);
+.companies-container{
+    width: 100%;
+    border: 2px solid #E8E8E8;
+    padding: 2em;
+    border-radius: 5px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 1em;
 }
-
-button.primary {
-    padding: 12px;
-    border: none;
-    border-radius: 4px;
-    background: var(--primary-color);
-    box-shadow: var(--shadow-button);
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 100ms ease;
-    color: var(--bg-color);
+.company-card-container{
+    border:  2px solid #E8E8E8;
+    border-radius: 5px;
 }
-
-button.primary:hover {
-    box-shadow: var(--shadow-button-hover);
+.company-card-container > header {
+    padding: 10px;
+    border-bottom: 2px solid #E8E8E8;
+    background-color: hsl(0, 0%, 91%, 0.6);
 }
-
-button[disabled], button[disabled]:hover {
-    background: white;
-    box-shadow: none;
-    cursor: initial;
+.company-card-details{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
-
-p.value {
-    text-align: center;
-    font-size: 32px;
+.bold{
+    font-weight: 800;
+}
+.company-card-container > footer{
+    padding: 10px;
+    border-top: 2px solid #E8E8E8;
+    background-color: hsl(0, 0%, 91%, 0.6);
+}
+.create-new-company-container, .create-new-person-container{
+    border: 2px solid #E8E8E8;
+    padding: 2em;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    align-items: center;
+    width: 300px;
+}
+.create-new-company-form-container, .create-new-person-form-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 100%;
+}
+.side-bar-elements{
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
 }
