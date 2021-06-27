@@ -44,14 +44,14 @@ export default function CompanyOverview(){
                     </div>
                     <div className="profile-card-details__right">
                         <p className="bold">Total Employees: </p>
-                        <p>{employeeList.length}</p>
+                        <p>{employeeList && employeeList.length || 0}</p>
                     </div>
                 </div>
             </div>
             <div className="employee-list-container">
                 <header>Employees</header>
-                {employeeList && employeeList.length > 0 && employeeList.map(emp => <EmployeeCard key={emp.id} name={emp.name} address={emp.address} />)}
-                {/* <EmployeeCard name="Bob McGuillicutty" address="1234 Story lane Neverland, Narnia 09876" /> */}
+                {employeeList && employeeList.length > 0 ? employeeList.map(emp => <EmployeeCard key={emp.id} name={emp.name} address={emp.address} />)
+                : <div>No employees are added yet</div>}
             </div>
         </div>
     )
