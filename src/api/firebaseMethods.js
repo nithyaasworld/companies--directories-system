@@ -3,24 +3,13 @@ import { databaseRef } from "../firebaseConfig";
 
 export const addCompanyToDB = async (payload) => {
     return await databaseRef.collection("companies").add(payload);
-    // .then((addedData) => {
-    //   console.log(
-    //     "Data with id: " +
-    //       addedData.id +
-    //       " Path: " +
-    //       addedData.path +
-    //       " successfully added to DB"
-    //   );
-    //   let itemToAdd = {
-    //     id: addedData.id,
-    //     content: inputRef.current.value,
-    //     completed: false,
-    //   };
-    //   console.log({ itemToAdd });
-    //   dispatch(addTodo(itemToAdd));
-    //   inputRef.current.value = "";
-    // })
-    // .catch((e) => {
-    //   console.error("Not able to add data to DB.", e);
-    // });
+}
+export const getAllCompaniesFromDB = async () => {
+    return await databaseRef.collection("companies").get();
+}
+export const addNewPersonToDB = async (payload) => {
+    return await databaseRef.collection("companies").doc(payload.id).collection('employees').add({"name": payload.name, "address": payload.address});
+}
+export const getAllEmployeesFromDB = async(companyID) => {
+    return await databaseRef.collection("companies").doc(companyID).collection('employees').get();
 }

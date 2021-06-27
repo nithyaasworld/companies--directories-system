@@ -1,16 +1,14 @@
-// export const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
-// export const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
+import { addCompanyToDB, getAllCompaniesFromDB, addNewPersonToDB, getAllEmployeesFromDB } from "../api/firebaseMethods";
 
-import { addCompanyToDB } from "../api/firebaseMethods";
-
-// export const BEGIN_UPDATE = 'BEGIN_UPDATE';
-export const ADD_COMPANY_BEGIN = 'ADD_COMPANY_BEGIN';
+export const UPDATE_BEGIN = 'UPDATE_BEGIN';
 export const ADD_COMPANY_SUCCESS = 'ADD_COMPANY_SUCCESS';
-export const ADD_COMPANY_ERROR = 'ADD_COMPANY_ERROR';
+export const UPDATE_ERROR = 'UPDATE_ERROR';
+export const ADD_ALL_COMPANY_SUCCESS = 'ADD_ALL_COMPANY_SUCCESS';
+export const UPDATE_EMPLOYEE_LIST = 'UPDATE_EMPLOYEE_LIST';
 
-export const addCompanyBegin = () => {
+export const updateBegin = () => {
     return {
-        type: ADD_COMPANY_BEGIN,
+        type: UPDATE_BEGIN,
     }
 };
 export const addCompanySuccess = (newItem) => {
@@ -19,17 +17,70 @@ export const addCompanySuccess = (newItem) => {
         payload: newItem,
     }
 }
-export const addCompanyError = (error) => {
+export const updateError = (error) => {
     return {
-        type: ADD_COMPANY_ERROR,
+        type: UPDATE_ERROR,
         payload: error,
     }
 }
+export const addAllCompanySuccess = (data) => {
+    return {
+        type: ADD_ALL_COMPANY_SUCCESS,
+        payload: data,
+    }
+}
+export const updateEmployeeList = (payload) => {
+    return {
+        type: UPDATE_EMPLOYEE_LIST,
+        payload: payload,
+    }
+}
+
 export const addCompany = (newItem) => {
     return async (dispatch) => {
-        dispatch(addCompanyBegin());
-        await addCompanyToDB(newItem).catch((e) => dispatch(addCompanyError(e.message)));
-        dispatch(addCompanySuccess(newItem));
+        dispatch(updateBegin());
+        await addCompanyToDB(newItem)
+        .then(() => dispatch(getAllCompanies()))
+        .catch((e) => dispatch(updateError(e.message)));
+    }
+}
+export const getAllCompanies = () => {
+    return async (dispatch) => {
+        dispatch(updateBegin());
+        await getAllCompaniesFromDB()
+        .then((snapshot) => dispatch(addAllCompanySuccess(snapshot.docs.map(doc => {
+            let docObj = doc.data();
+            docObj["id"] = doc.id;
+            return docObj;
+        }))))
+        .catch((e) => dispatch(updateError(e.message)));
+    }
+}
+export const addNewPerson = ({id, name, address}) => {
+    return async (dispatch) => {
+        dispatch(updateBegin());
+        await addNewPersonToDB({id, name, address})
+        .then((snapshot) => dispatch(addAllCompanySuccess(snapshot.docs.map(doc => {
+            let docObj = doc.data();
+            docObj["id"] = doc.id;
+            return docObj;
+        }))))
+        .catch((e) => dispatch(updateError(e.message)));
+    }
+}
+export const getAllEmployees = (companyID) => {
+    return async (dispatch) => {
+        dispatch(updateBegin());
+        await getAllEmployeesFromDB(companyID)
+        .then((snapshot) => {
+            let employeesList = snapshot.docs.map(doc => {
+                let docObj = doc.data();
+                docObj["id"] = doc.id;
+                return docObj;
+            })
+            dispatch(updateEmployeeList({id: companyID, employees: employeesList}));
+        })
+        .catch(e => dispatch(updateError(e.message)));
     }
 }
 

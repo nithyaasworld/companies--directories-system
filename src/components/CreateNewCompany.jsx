@@ -21,6 +21,10 @@ export default function CreateNewCompany() {
         let companyObj = { name, address, revenue, phone };
         console.log(companyObj);
         dispatch(addCompany(companyObj));
+        setName("");
+        setAddress("");
+        setRevenue("");
+        setPhone("");
     }
 
     useEffect(() => {
