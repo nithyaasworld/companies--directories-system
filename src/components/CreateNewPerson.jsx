@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useSelector } from 'react-redux';
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { addNewPerson } from "../actions/companyActions";
 
@@ -13,11 +13,19 @@ export default function CreateNewPerson() {
     let selectRef = useRef();
     let personNameRef = useRef();
     let addressRef = useRef();
+    let [showError, setShowError] = useState(false);
     const formSubmitHandler = () => {
-      dispatch(addNewPerson({id: selectRef.current.value, name: personNameRef.current.value, address: addressRef.current.value}));
-      selectRef.current.defaultValue = "";
-      personNameRef.current.value = "";
-      addressRef.current.value = "";
+      setShowError(() => false);
+      if(selectRef.current.value.trim() === "" || 
+      personNameRef.current.value.trim() === "" ||
+      addressRef.current.value.trim() === ""){
+        setShowError(true);
+      }else {
+        dispatch(addNewPerson({id: selectRef.current.value, name: personNameRef.current.value, address: addressRef.current.value}));
+        selectRef.current.defaultValue = "";
+        personNameRef.current.value = "";
+        addressRef.current.value = "";
+      }
     }
   return (
     <div className="create-new-person-container">
@@ -34,6 +42,7 @@ export default function CreateNewPerson() {
         {companyListState.map(item => <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem> )}
         </Select>
         <Button onClick={formSubmitHandler} variant="contained">Save</Button>
+        {showError && <p style={{color: 'red'}}>Please enter all the fields</p>}
       </form>
     </div>
   );
